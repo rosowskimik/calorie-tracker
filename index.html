@@ -7,11 +7,55 @@
 	<title>Tracalorie | Meal & Calorie Tracker</title>
 	<!-- Compiled and minified CSS -->
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
-	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
-	
-	
+	<nav>
+		<div class="nav-wrapper blue">
+			<div class="container">
+				<a href="#" class="brand-logo center">Tracalorie</a>
+				<ul class="right">
+					<li><a href="" class="clear-btn btn blue lighten-3">Clear All</a></li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+
+	<div class="container">
+		<div class="card">
+			<div class="card-content">
+				<span class="card-title">Add Meal / Food Item</span>
+				<form class="col">
+					<div class="row">
+						<div class="input-field col s6">
+							<input type="text" placeholder="Add Item" id="item-name">
+							<label for="item-name">Meal</label>
+						</div>
+						<div class="input-field col s6">
+							<input type="text" placeholder="Add Calories" id="item-calories">
+							<label for="item-calories">Calorie</label>
+						</div>
+						<button class="add-btn btn blue darken-3"><i class="fa fa-plus" aria-hidden="true"></i> Add Meal</button>
+						<!-- <button class="update-btn btn orange"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Update Meal</button>
+						<button class="delete-btn btn red"><i class="fa fa-remove" aria-hidden="true"></i> Delete Meal</button> -->
+						<button class="add-btn btn grey pull-right"><i class="fa fa-chevron-circle-left" aria-hidden="true"></i> Back</button>
+					</div>
+				</form>
+			</div>
+		</div>
+		<h3 class="center-align">Total Calories: <span class="total-calories">0</span></h3>
+		<ul class="collection" id="item-list">
+			<li class="collection-item" id="item-0">
+				<strong>Steak Dinner: </strong><em>1000 calories</em>
+				<a href="#" class="secondary-content"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+			</li>
+			<li class="collection-item">
+				<strong>Chocolate Bar: </strong><em>600 calories</em>
+				<a href="#" class="secondary-content"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+			</li>
+		</ul>
+	</div>
+
 	<script
   src="https://code.jquery.com/jquery-3.4.1.min.js"
   integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
