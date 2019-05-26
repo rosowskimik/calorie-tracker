@@ -1,7 +1,7 @@
 //Storage Controller
 
 //Item Controller
-const ItemCtrl = (function(){
+const ItemCtrl = (() => {
 	//Item constructor
 	class Item {
 		constructor(id, name, calories){
@@ -23,28 +23,48 @@ const ItemCtrl = (function(){
 	}
 	//Public methods
 	return {
-		logData: function(){
+		logData: () => {
 			return data;
+		},
+		getItems: () => {
+			return data.items;
 		}
 	}
 })();
 
 //UI Controller
-const UICtrl = (function() {
+const UICtrl = (() => {
+	const UISelectors = {
+		itemList: '#item-list'
+	};
 	
 	//Public methods
-	return{
-
+	return {
+		populateItemList: items => {
+			let html = '';
+			items.forEach(item => {
+				html += `
+					<li class="collection-item" id="item-${item.id}">
+						<strong>${item.name}: </strong><em>${item.calories} Calories</em><a href="#" class="secondary-content"><i class="edit-item fa fa-pencil" aria-hidden="true"></i></a>
+					</li>
+				`;
+			});
+			//Populate into UI
+			document.querySelector(UISelectors.itemList).innerHTML = html;
+		}
 	}
 })();
 //App Controller
-const App = (function(ItemCtrl, UICtrl){
+const App = ((ItemCtrl, UICtrl) => {
 
 
 	//Public methods
 	return {
-		init: function(){
-			console.log('Initalizing App...');
+		init: () => {
+			//Fetch items
+			const items = ItemCtrl.getItems();
+			//Output items into UI
+			UICtrl.populateItemList(items);
 		}
 	}
 })(ItemCtrl, UICtrl);
