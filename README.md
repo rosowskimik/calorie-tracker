@@ -1,1 +1,1 @@
-# Callorie counter
+# Calorie counter
