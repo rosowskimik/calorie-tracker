@@ -2,6 +2,7 @@
 
 //Item Controller
 const ItemCtrl = (() => {
+
 	//Item constructor
 	class Item {
 		constructor(id, name, calories){
@@ -21,21 +22,47 @@ const ItemCtrl = (() => {
 		currentItem: null,
 		totalCalories: 0
 	}
+
 	//Public methods
 	return {
-		logData: () => {
-			return data;
-		},
 		getItems: () => {
 			return data.items;
+		},
+
+		addItem: (name, calories) => {
+			//Create ID
+			let id;
+			if(data.items.length > 0){
+				id = data.items[data.items.length - 1].id + 1;
+			} else {
+				id = 0;
+			}
+			//Calories to number
+			calories = parseInt(calories);
+
+			//Create new item
+			newItem = new Item(id, name, calories);
+			//Add to data items array
+			data.items.push(newItem);
+
+			return newItem;
+		},
+
+		logData: () => {
+			return data;
 		}
 	}
 })();
 
 //UI Controller
 const UICtrl = (() => {
+
+	//UISelectors object
 	const UISelectors = {
-		itemList: '#item-list'
+		itemList: '#item-list',
+		addBtn: '.add-btn',
+		itemNameInput: '#item-name',
+		itemCaloriesInput: '#item-calories' 
 	};
 	
 	//Public methods
@@ -51,20 +78,57 @@ const UICtrl = (() => {
 			});
 			//Populate into UI
 			document.querySelector(UISelectors.itemList).innerHTML = html;
+		},
+
+		getItemInput: () => {
+			return {
+				name: document.querySelector(UISelectors.itemNameInput).value,
+				calories: document.querySelector(UISelectors.itemCaloriesInput).value
+			}
+		},
+
+		getSelectors: () => {
+			return UISelectors;
 		}
 	}
 })();
+
 //App Controller
 const App = ((ItemCtrl, UICtrl) => {
+	//Load event lsiteners
+	const loadEventListeners = () => {
+		//Get UI Selectors
+		const UISelectors = UICtrl.getSelectors();
 
+		//Add item event
+		document.querySelector(UISelectors.addBtn).addEventListener('click', itemAddSubmit);
+	}
+
+	//Add item submit
+	const itemAddSubmit = e => {
+		//Get form input from UICtrl
+		const input = UICtrl.getItemInput();
+
+		//Check for name and calorie input
+		if(input.name !== '' && input.calories !== ''){
+			//Add item
+			const newItem = ItemCtrl.addItem(input.name, input.calories);
+		}
+
+		e.preventDefault();
+	}
 
 	//Public methods
 	return {
 		init: () => {
 			//Fetch items
 			const items = ItemCtrl.getItems();
+
 			//Output items into UI
 			UICtrl.populateItemList(items);
+
+			//Load event listeners
+			loadEventListeners();
 		}
 	}
 })(ItemCtrl, UICtrl);
