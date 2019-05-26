@@ -15,9 +15,9 @@ const ItemCtrl = (() => {
 	//Placeholder data / data structure
 	const data = {
 		items: [
-			{id: 0, name: 'Steak Dinner', calories: 1200},
-			{id: 1, name: 'Cookies', calories: 400},
-			{id: 2, name: 'Eggs', calories: 500}
+			// {id: 0, name: 'Steak Dinner', calories: 1200},
+			// {id: 1, name: 'Cookies', calories: 400},
+			// {id: 2, name: 'Eggs', calories: 500}
 		],
 		currentItem: null,
 		totalCalories: 0
@@ -87,6 +87,32 @@ const UICtrl = (() => {
 			}
 		},
 
+		addListItem: item => {
+			//Show the list
+			document.querySelector(UISelectors.itemList).style.display = 'block';
+			//Create li element
+			const li = document.createElement('li');
+			li.className = 'collection-item';
+			li.id = `item-${item.id}`;
+			//Add HTML
+			li.innerHTML = `
+				<strong>${item.name}: </strong><em>${item.calories} Calories</em><a href="#" class="secondary-content"><i class="edit-item fa fa-pencil" aria-hidden="true"></i></a>
+			`;
+			//Insert item
+			document.querySelector(UISelectors.itemList).insertAdjacentElement('beforeend', li);
+		},
+
+		//Clear input
+		clearInput: () => {
+			document.querySelector(UISelectors.itemNameInput).value = '';
+			document.querySelector(UISelectors.itemCaloriesInput).value = '';
+		},
+
+		//Hide list
+		hideList: () => {
+			document.querySelector(UISelectors.itemList).style.display = 'none';
+		},
+
 		getSelectors: () => {
 			return UISelectors;
 		}
@@ -113,8 +139,13 @@ const App = ((ItemCtrl, UICtrl) => {
 		if(input.name !== '' && input.calories !== ''){
 			//Add item
 			const newItem = ItemCtrl.addItem(input.name, input.calories);
-		}
 
+			//Add item to UI list
+			UICtrl.addListItem(newItem);
+
+			//Clear input
+			UICtrl.clearInput()
+		}
 		e.preventDefault();
 	}
 
@@ -124,8 +155,13 @@ const App = ((ItemCtrl, UICtrl) => {
 			//Fetch items
 			const items = ItemCtrl.getItems();
 
-			//Output items into UI
-			UICtrl.populateItemList(items);
+			//Check if any items
+			if(items.length === 0) {
+				UICtrl.hideList();
+			} else {
+				//Output items into UI
+				UICtrl.populateItemList(items);
+			}
 
 			//Load event listeners
 			loadEventListeners();
