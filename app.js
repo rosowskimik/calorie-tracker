@@ -1,4 +1,37 @@
 //Storage Controller
+const StorageCtrl = (() => {
+
+	//Public methods
+	return {
+		storeItem: item => {
+			let items;
+			//Check if any items in ls
+			if(localStorage.getItem('items') === null){
+				items = [];
+				//Push new item
+				items.push(item);
+				//Set ls
+				localStorage.setItem('items', JSON.stringify(items));
+			} else {
+				items = JSON.parse(localStorage.getItem('items'));
+				//Push new item
+				items.push(item);
+				//Set ls
+				localStorage.setItem('items', JSON.stringify(items));
+			}
+		},
+
+		getStoredItems: () => {
+			let items;
+			if(localStorage.getItem('items') === null){
+				items = [];
+			} else {
+				items = JSON.parse(localStorage.getItem('items'));
+			}
+			return items
+		}
+	}
+})();
 
 //Item Controller
 const ItemCtrl = (() => {
@@ -13,11 +46,7 @@ const ItemCtrl = (() => {
 
 	//Placeholder data / data structure
 	const data = {
-		items: [
-			// {id: 0, name: 'Steak Dinner', calories: 1200},
-			// {id: 1, name: 'Cookies', calories: 400},
-			// {id: 2, name: 'Eggs', calories: 500}
-		],
+		items: StorageCtrl.getStoredItems(),
 		currentItem: null,
 		totalCalories: 0
 	};
@@ -251,7 +280,7 @@ const UICtrl = (() => {
 })();
 
 //App Controller
-const App = ((ItemCtrl, UICtrl) => {
+const App = ((ItemCtrl, UICtrl, StorageCtrl) => {
 	//Load event listeners
 	const loadEventListeners = () => {
 		//Get UI Selectors
@@ -312,6 +341,9 @@ const App = ((ItemCtrl, UICtrl) => {
 			//Get total calories / add to UI
 			const totalCalories = ItemCtrl.getTotalCalories();
 			UICtrl.showTotalCalories(totalCalories);
+
+			//Store in LS
+			StorageCtrl.storeItem(newItem);
 
 			//Clear input
 			UICtrl.clearInput();
@@ -413,6 +445,6 @@ const App = ((ItemCtrl, UICtrl) => {
 			loadEventListeners();
 		}
 	};
-})(ItemCtrl, UICtrl);
+})(ItemCtrl, UICtrl, StorageCtrl);
 
 App.init();
